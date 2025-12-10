@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentCare Assistant – Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef2f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        header {
+            background-color: #4a90e2;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.4em;
+        }
+        #chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .msg {
+            padding: 10px 14px;
+            max-width: 70%;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+        .user {
+            background-color: #d1e7ff;
+            align-self: flex-end;
+        }
+        .bot {
+            background-color: white;
+            border: 1px solid #ccc;
+            align-self: flex-start;
+        }
+        #input-area {
+            display: flex;
+            padding: 10px;
+            background-color: white;
+            border-top: 1px solid #ccc;
+        }
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #aaa;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+        button {
+            margin-left: 10px;
+            padding: 12px 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #357ABD;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        StudentCare Assistant – Чат
+    </header>
+
+    <div id="chat-box"></div>
+
+    <div id="input-area">
+        <input type="text" id="userInput" placeholder="Введите сообщение..." />
+        <button onclick="sendMessage()">Отправить</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            let input = document.getElementById("userInput");
+            let text = input.value.trim();
+            if (text === "") return;
+
+            let chatBox = document.getElementById("chat-box");
+
+            // Сообщение пользователя
+            let userMsg = document.createElement("div");
+            userMsg.className = "msg user";
+            userMsg.textContent = text;
+            chatBox.appendChild(userMsg);
+
+            // Ответ ассистента-заглушка
+            let botMsg = document.createElement("div");
+            botMsg.className = "msg bot";
+            botMsg.textContent = "Спасибо за сообщение! Полная AI-версия будет доступна скоро 😊";
+            chatBox.appendChild(botMsg);
+
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
