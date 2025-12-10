@@ -1,270 +1,116 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>StudentCare Assistant – Чат</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      background-color: #283593;
-      color: #fff;
-      padding: 18px 0;
-      text-align: center;
-      font-size: 1.6em;
-      font-weight: 700;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    #controls {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      background-color: #f5f7fa;
-      padding: 15px 10px;
-      border-bottom: 2px solid #ccc;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      flex-wrap: wrap;
-    }
-
-    select {
-      padding: 10px 14px;
-      font-size: 1em;
-      border-radius: 8px;
-      border: 1.5px solid #ccc;
-      transition: border-color 0.3s ease;
-      min-width: 150px;
-      cursor: pointer;
-      background: white;
-    }
-    select:hover,
-    select:focus {
-      border-color: #3f51b5;
-      outline: none;
-    }
-
-    #chat-box {
-      flex: 1;
-      padding: 20px;
-      background: white;
-      margin: 15px 25px;
-      border-radius: 12px;
-      box-shadow: 0 8px 16px rgba(50, 50, 93, 0.1);
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .msg {
-      max-width: 70%;
-      padding: 14px 18px;
-      border-radius: 18px;
-      font-size: 1em;
-      line-height: 1.4;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      word-wrap: break-word;
-    }
-
-    .user {
-      background-color: #3f51b5;
-      color: white;
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-      box-shadow: 0 2px 12px rgba(63, 81, 181, 0.5);
-    }
-
-    .bot {
-      background-color: #e3f2fd;
-      color: #0d47a1;
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
-      box-shadow: 0 2px 12px rgba(3, 169, 244, 0.3);
-    }
-
-    #input-area {
-      display: flex;
-      padding: 15px 25px;
-      background-color: #f5f7fa;
-      border-top: 2px solid #ccc;
-      gap: 12px;
-      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    #userInput {
-      flex: 1;
-      padding: 14px 18px;
-      font-size: 1.1em;
-      border-radius: 30px;
-      border: 1.5px solid #ccc;
-      transition: border-color 0.3s ease;
-      outline: none;
-    }
-
-    #userInput:focus {
-      border-color: #3f51b5;
-    }
-
-    button {
-      background-color: #3f51b5;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 14px 24px;
-      font-size: 1.1em;
-      cursor: pointer;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(63, 81, 181, 0.6);
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #2c387e;
-    }
-
-    @media (max-width: 600px) {
-      #chat-box {
-        margin: 10px 12px;
-      }
-      #controls {
-        gap: 10px;
-      }
-      select {
-        min-width: 120px;
-        font-size: 0.9em;
-      }
-      button {
-        padding: 12px 18px;
-        font-size: 1em;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>StudentCare Assistant – Чат</header>
-
-  <div id="controls">
-    <select id="language-select" aria-label="Выбор языка">
-      <option value="ru">Русский</option>
-      <option value="kz">Казахский</option>
-      <option value="en">English</option>
-    </select>
-
-    <select id="topic-select" aria-label="Выбор темы">
-      <option value="social">Социальные проблемы</option>
-      <option value="study">Учёба</option>
-      <option value="motivation">Мотивация</option>
-    </select>
-  </div>
-
-  <div id="chat-box"></div>
-
-  <div id="input-area">
-    <input type="text" id="userInput" placeholder="Напиши сообщение и нажми Enter..." autocomplete="off" />
-    <button id="sendBtn">Отправить</button>
-  </div>
-
-  <script>
-    const responses = {
-      ru: {
-        social: [
-          "Понимаю, что бывает сложно с друзьями. Важно найти поддержку и не бояться просить помощи.",
-          "Если чувствуешь одиночество, попробуй найти школьные кружки по интересам.",
-          "Буллинг — это серьёзно, поговори с учителем или родителями."
-        ],
-        study: [
-          "Для успешной учёбы важно планировать время и делать перерывы.",
-          "Если что-то не понятно, не стесняйся спрашивать учителей или одноклассников.",
-          "Домашние задания лучше делать по частям, чтобы не уставать."
-        ],
-        motivation: [
-          "Помни, что каждый маленький шаг приближает тебя к цели!",
-          "Не забывай делать перерывы и заботиться о себе.",
-          "Ты способен на большее, просто верь в себя и действуй!"
-        ]
-      },
-      kz: {
-        social: [
-          "Достармен қиындықтар болуы мүмкін. Қолдау табу маңызды.",
-          "Жалғыздық сезінсең, мектептің қызық клубтарына қосыл.",
-          "Буллинг туралы мұғалімге немесе ата-анаңа айт."
-        ],
-        study: [
-          "Табысты оқу үшін уақытты жоспарлап, үзілістер жаса.",
-          "Ештеңе түсініксіз болса, мұғалімдерден сұраудан ұялма.",
-          "Үй тапсырмасын бөліп-бөліп орында."
-        ],
-        motivation: [
-          "Әр кішкентай қадам мақсатыңа жақындатады!",
-          "Үзіліс жасап, өзіңе қамқор болуды ұмытпа.",
-          "Өзіңе сен, және әрекет ет!"
-        ]
-      },
-      en: {
-        social: [
-          "I understand it's tough sometimes with friends. Finding support is important.",
-          "If you feel lonely, try joining school clubs or online groups.",
-          "Bullying is serious — talk to a teacher or parent about it."
-        ],
-        study: [
-          "Planning your time and taking breaks helps you study better.",
-          "Don't hesitate to ask teachers or classmates if something is unclear.",
-          "Do homework in parts to avoid burnout."
-        ],
-        motivation: [
-          "Remember, every small step brings you closer to your goal!",
-          "Don't forget to take breaks and take care of yourself.",
-          "You are capable of more — just believe and act!"
-        ]
-      }
-    };
-
-    function getRandomResponse(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    function sendMessage() {
-      let input = document.getElementById("userInput");
-      let text = input.value.trim();
-      if (text === "") return;
-
-      let chatBox = document.getElementById("chat-box");
-      let lang = document.getElementById("language-select").value;
-      let topic = document.getElementById("topic-select").value;
-
-      // Сообщение пользователя
-      let userMsg = document.createElement("div");
-      userMsg.className = "msg user";
-      userMsg.textContent = text;
-      chatBox.appendChild(userMsg);
-
-      // Ответ бота из базы по теме и языку
-      let botMsg = document.createElement("div");
-      botMsg.className = "msg bot";
-      botMsg.textContent = getRandomResponse(responses[lang][topic]);
-      chatBox.appendChild(botMsg);
-
-      input.value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    // Отправка сообщения по нажатию Enter
-    document.getElementById("userInput").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        sendMessage();
-      }
-    });
-
-    // Отправка по кнопке
-    document.getElementById("sendBtn").addEventListener("click", sendMessage);
-  </script>
-</body>
-</html>
+const responses = {
+  ru: {
+    social: [
+      "Понимаю, что бывает сложно с друзьями. Важно найти поддержку и не бояться просить помощи.",
+      "Если чувствуешь одиночество, попробуй найти школьные кружки по интересам.",
+      "Буллинг — это серьёзно, поговори с учителем или родителями.",
+      "Поддержка близких очень важна — не замыкайся в себе.",
+      "Важно учиться понимать других и выражать свои чувства.",
+      "Проблемы с одноклассниками решаются через диалог и помощь взрослых.",
+      "Если чувствуешь стресс, попробуй поговорить с кем-то, кому доверяешь.",
+      "Занятия спортом и творчеством помогают снять напряжение.",
+      "Развивай навыки общения — это поможет строить дружбу.",
+      "Если сталкиваешься с дискриминацией, важно знать свои права и обратиться за помощью."
+    ],
+    study: [
+      "Для успешной учёбы важно планировать время и делать перерывы.",
+      "Если что-то не понятно, не стесняйся спрашивать учителей или одноклассников.",
+      "Домашние задания лучше делать по частям, чтобы не уставать.",
+      "Учись ставить маленькие цели и награждай себя за их достижение.",
+      "Повторение — ключ к запоминанию материала.",
+      "Не бойся просить помощи, если что-то даётся сложно.",
+      "Используй разные способы обучения — видео, книги, практические задания.",
+      "Создавай конспекты и схемы для лучшего понимания.",
+      "Сохраняй мотивацию, напоминая себе, зачем учишься.",
+      "Организуй своё рабочее место, чтобы ничего не отвлекало."
+    ],
+    motivation: [
+      "Помни, что каждый маленький шаг приближает тебя к цели!",
+      "Не забывай делать перерывы и заботиться о себе.",
+      "Ты способен на большее, просто верь в себя и действуй!",
+      "Ошибки — это часть пути к успеху, не сдавайся!",
+      "Ставь перед собой вдохновляющие цели и двигайся к ним.",
+      "Верь в себя и свои силы — это уже большой шаг вперед.",
+      "Окружай себя позитивными людьми, которые поддерживают тебя.",
+      "Используй визуализацию — представь, чего хочешь добиться.",
+      "Помни: успех приходит к тем, кто не боится пробовать.",
+      "Каждый день — новая возможность стать лучше."
+    ]
+  },
+  kz: {
+    social: [
+      "Достармен қиындықтар болуы мүмкін. Қолдау табу маңызды.",
+      "Жалғыздық сезінсең, мектептің қызық клубтарына қосыл.",
+      "Буллинг туралы мұғалімге немесе ата-анаңа айт.",
+      "Жақындарыңның қолдауы маңызды — өзіңді оқшаулама.",
+      "Басқаларды түсініп, өз сезіміңді білдіруді үйрен.",
+      "Сыныптастармен қиындықтарды диалог арқылы шешуге болады.",
+      "Стрессті жеңу үшін сенетін адаммен сөйлес.",
+      "Спорт пен шығармашылықпен айналысу стресс азайтады.",
+      "Қарым-қатынас дағдыларын дамыт — бұл достықты нығайтады.",
+      "Дискриминацияға тап болсаң, құқықтарыңды біл және көмекке жүгін."
+    ],
+    study: [
+      "Табысты оқу үшін уақытты жоспарлап, үзілістер жаса.",
+      "Ештеңе түсініксіз болса, мұғалімдерден сұраудан ұялма.",
+      "Үй тапсырмасын бөліп-бөліп орында.",
+      "Кішігірім мақсаттар қойып, жеткен сайын өзіңді марапатта.",
+      "Материалды қайталау — есте сақтаудың кілті.",
+      "Қиындықтар болса, көмек сұраудан қорықпа.",
+      "Оқуды әртүрлі тәсілдермен жүргіз — видео, кітаптар, тәжірибелік тапсырмалар.",
+      "Жақсы түсіну үшін конспекттер мен схемалар жаса.",
+      "Мотивацияны сақтау үшін неге оқитыныңды еске түсір.",
+      "Жұмыс орныңды ұйымдастырып, алаңдататын нәрселерді болдырма."
+    ],
+    motivation: [
+      "Әр кішкентай қадам мақсатыңа жақындатады!",
+      "Үзіліс жасап, өзіңе қамқор болуды ұмытпа.",
+      "Өзіңе сен, және әрекет ет!",
+      "Қателіктер — жетістікке апаратын жолдың бір бөлігі, бас тартпа!",
+      "Өзіңе шабыт беретін мақсаттар қойып, соларға жет!",
+      "Өзіңе және күшіңе сен — бұл үлкен қадам.",
+      "Сенімді қолдайтын позитивті адамдармен қорша.",
+      "Көз алдыңа жетуді қалайтын нәрсені елестет.",
+      "Табысты тек әрекет ететіндерге келеді.",
+      "Әр күн — өзіңді жақсартудың жаңа мүмкіндігі."
+    ]
+  },
+  en: {
+    social: [
+      "I understand it's tough sometimes with friends. Finding support is important.",
+      "If you feel lonely, try joining school clubs or online groups.",
+      "Bullying is serious — talk to a teacher or parent about it.",
+      "Support from close ones is important — don't isolate yourself.",
+      "Learn to understand others and express your feelings.",
+      "Problems with classmates can be solved through dialogue and adult help.",
+      "If you're stressed, try talking to someone you trust.",
+      "Sports and creative activities help relieve tension.",
+      "Develop communication skills — it helps build friendships.",
+      "If you face discrimination, know your rights and seek help."
+    ],
+    study: [
+      "Planning your time and taking breaks helps you study better.",
+      "Don't hesitate to ask teachers or classmates if something is unclear.",
+      "Do homework in parts to avoid burnout.",
+      "Set small goals and reward yourself for achievements.",
+      "Repetition is the key to memorization.",
+      "Don't be afraid to ask for help if something is difficult.",
+      "Use different learning methods — videos, books, practical tasks.",
+      "Create notes and diagrams for better understanding.",
+      "Keep your motivation by reminding yourself why you study.",
+      "Organize your workspace to avoid distractions."
+    ],
+    motivation: [
+      "Remember, every small step brings you closer to your goal!",
+      "Don't forget to take breaks and take care of yourself.",
+      "You are capable of more — just believe and act!",
+      "Mistakes are part of the path to success, don't give up!",
+      "Set inspiring goals and move towards them.",
+      "Believe in yourself and your strength — that's a big step forward.",
+      "Surround yourself with positive people who support you.",
+      "Use visualization — imagine what you want to achieve.",
+      "Remember: success comes to those who dare to try.",
+      "Every day is a new chance to improve."
+    ]
+  }
+};
