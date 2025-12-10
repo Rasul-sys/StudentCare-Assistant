@@ -82,27 +82,86 @@
     </div>
 
     <script>
-        function sendMessage() {
-            let input = document.getElementById("userInput");
-            let text = input.value.trim();
-            if (text === "") return;
+      <script>
+  function generateResponse(text) {
+    text = text.toLowerCase();
 
-            let chatBox = document.getElementById("chat-box");
+    // Определяем язык
+    const isKazakh = /ә|ң|ү|қ|ғ|ө/.test(text);
+    const isEnglish = /[a-z]/.test(text);
 
-            // Сообщение пользователя
-            let userMsg = document.createElement("div");
-            userMsg.className = "msg user";
-            userMsg.textContent = text;
-            chatBox.appendChild(userMsg);
+    // Ответы на русском
+    if (!isKazakh && !isEnglish) {
+      if (text.includes("привет") || text.includes("салам"))
+        return "Салам! Чем могу помочь? 😊";
 
-            // Ответ ассистента-заглушка
-            let botMsg = document.createElement("div");
-            botMsg.className = "msg bot";
-            botMsg.textContent = "Спасибо за сообщение! Полная AI-версия будет доступна скоро 😊";
-            chatBox.appendChild(botMsg);
+      if (text.includes("домаш") || text.includes("дз"))
+        return "Конечно! Скинь задание, постараюсь объяснить простыми словами.";
 
-            input.value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
+      if (text.includes("стресс") || text.includes("трев"))
+        return "Старайся делать паузы, дышать глубже и делить задачи на маленькие шаги. Ты справишься 💪";
+
+      if (text.includes("учёб") || text.includes("учеб"))
+        return "Лучше учиться помогает режим: 40 минут работа, 10 минут отдых. Попробуешь?";
+
+      return "Понял тебя! Могу помочь с учёбой, мотивацией или школьными вопросами.";
+    }
+
+    // Ответы на казахском
+    if (isKazakh) {
+      if (text.includes("сәлем"))
+        return "Сәлем! Қалай көмектесе аламын? 😊";
+
+      if (text.includes("үй жұмысы") || text.includes("дз"))
+        return "Жарайды! Тапсырманы жібер, түсінікті етіп айтып беремін.";
+
+      if (text.includes("стресс") || text.includes("уайым"))
+        return "Тыныс алуды реттеп, демалыс жасап көр. Сен міндетті түрде жеңесің 💪";
+
+      return "Түсіндім! Сабаққа, мотивацияға немесе мектеп мәселелеріне көмектесе аламын.";
+    }
+
+    // Ответы на английском
+    if (isEnglish) {
+      if (text.includes("hi") || text.includes("hello"))
+        return "Hello! How can I help you today? 😊";
+
+      if (text.includes("homework"))
+        return "Sure! Send your task and I’ll help explain it.";
+
+      if (text.includes("stress"))
+        return "Try breathing slower and taking small breaks. You've got this 💪";
+
+      return "Got it! I can help with study tips, motivation, or school-life support.";
+    }
+
+    return "Хм… не совсем понял, но я готов помочь!";
+  }
+
+  function sendMessage() {
+    let input = document.getElementById("userInput");
+    let text = input.value.trim();
+    if (text === "") return;
+
+    let chatBox = document.getElementById("chat-box");
+
+    // Сообщение пользователя
+    let userMsg = document.createElement("div");
+    userMsg.className = "msg user";
+    userMsg.textContent = text;
+    chatBox.appendChild(userMsg);
+
+    // Ответ бота
+    let botMsg = document.createElement("div");
+    botMsg.className = "msg bot";
+    botMsg.textContent = generateResponse(text);
+    chatBox.appendChild(botMsg);
+
+    input.value = "";
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+</script>
+
         }
     </script>
 </body>
