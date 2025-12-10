@@ -1,161 +1,270 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudentCare Assistant – Chat</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #eef2f5;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        header {
-            background-color: #4a90e2;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 1.4em;
-        }
-        #chat-box {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .msg {
-            padding: 10px 14px;
-            max-width: 70%;
-            margin-bottom: 10px;
-            border-radius: 8px;
-        }
-        .user {
-            background-color: #d1e7ff;
-            align-self: flex-end;
-        }
-        .bot {
-            background-color: white;
-            border: 1px solid #ccc;
-            align-self: flex-start;
-        }
-        #input-area {
-            display: flex;
-            padding: 10px;
-            background-color: white;
-            border-top: 1px solid #ccc;
-        }
-        input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #aaa;
-            border-radius: 6px;
-            font-size: 1em;
-        }
-        button {
-            margin-left: 10px;
-            padding: 12px 20px;
-            background-color: #4a90e2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #357ABD;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>StudentCare Assistant – Чат</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: #283593;
+      color: #fff;
+      padding: 18px 0;
+      text-align: center;
+      font-size: 1.6em;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    #controls {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background-color: #f5f7fa;
+      padding: 15px 10px;
+      border-bottom: 2px solid #ccc;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+    }
+
+    select {
+      padding: 10px 14px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1.5px solid #ccc;
+      transition: border-color 0.3s ease;
+      min-width: 150px;
+      cursor: pointer;
+      background: white;
+    }
+    select:hover,
+    select:focus {
+      border-color: #3f51b5;
+      outline: none;
+    }
+
+    #chat-box {
+      flex: 1;
+      padding: 20px;
+      background: white;
+      margin: 15px 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(50, 50, 93, 0.1);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .msg {
+      max-width: 70%;
+      padding: 14px 18px;
+      border-radius: 18px;
+      font-size: 1em;
+      line-height: 1.4;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      word-wrap: break-word;
+    }
+
+    .user {
+      background-color: #3f51b5;
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 2px 12px rgba(63, 81, 181, 0.5);
+    }
+
+    .bot {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 2px 12px rgba(3, 169, 244, 0.3);
+    }
+
+    #input-area {
+      display: flex;
+      padding: 15px 25px;
+      background-color: #f5f7fa;
+      border-top: 2px solid #ccc;
+      gap: 12px;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #userInput {
+      flex: 1;
+      padding: 14px 18px;
+      font-size: 1.1em;
+      border-radius: 30px;
+      border: 1.5px solid #ccc;
+      transition: border-color 0.3s ease;
+      outline: none;
+    }
+
+    #userInput:focus {
+      border-color: #3f51b5;
+    }
+
+    button {
+      background-color: #3f51b5;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 14px 24px;
+      font-size: 1.1em;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(63, 81, 181, 0.6);
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #2c387e;
+    }
+
+    @media (max-width: 600px) {
+      #chat-box {
+        margin: 10px 12px;
+      }
+      #controls {
+        gap: 10px;
+      }
+      select {
+        min-width: 120px;
+        font-size: 0.9em;
+      }
+      button {
+        padding: 12px 18px;
+        font-size: 1em;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        StudentCare Assistant – Чат
-    </header>
+  <header>StudentCare Assistant – Чат</header>
 
-    <div id="chat-box"></div>
+  <div id="controls">
+    <select id="language-select" aria-label="Выбор языка">
+      <option value="ru">Русский</option>
+      <option value="kz">Казахский</option>
+      <option value="en">English</option>
+    </select>
 
-    <div id="input-area">
-        <input type="text" id="userInput" placeholder="Введите сообщение..." />
-        <button onclick="sendMessage()">Отправить</button>
-    </div>
-<script>
-  function generateResponse(text) {
-    text = text.toLowerCase();
+    <select id="topic-select" aria-label="Выбор темы">
+      <option value="social">Социальные проблемы</option>
+      <option value="study">Учёба</option>
+      <option value="motivation">Мотивация</option>
+    </select>
+  </div>
 
-    // Определяем язык
-    const isKazakh = /ә|ң|ү|қ|ғ|ө/.test(text);
-    const isEnglish = /[a-z]/.test(text);
+  <div id="chat-box"></div>
 
-    // Ответы на русском
-    if (!isKazakh && !isEnglish) {
-      if (text.includes("привет") || text.includes("салам"))
-        return "Салам! Чем могу помочь? 😊";
+  <div id="input-area">
+    <input type="text" id="userInput" placeholder="Напиши сообщение и нажми Enter..." autocomplete="off" />
+    <button id="sendBtn">Отправить</button>
+  </div>
 
-      if (text.includes("домаш") || text.includes("дз"))
-        return "Конечно! Скинь задание, постараюсь объяснить простыми словами.";
+  <script>
+    const responses = {
+      ru: {
+        social: [
+          "Понимаю, что бывает сложно с друзьями. Важно найти поддержку и не бояться просить помощи.",
+          "Если чувствуешь одиночество, попробуй найти школьные кружки по интересам.",
+          "Буллинг — это серьёзно, поговори с учителем или родителями."
+        ],
+        study: [
+          "Для успешной учёбы важно планировать время и делать перерывы.",
+          "Если что-то не понятно, не стесняйся спрашивать учителей или одноклассников.",
+          "Домашние задания лучше делать по частям, чтобы не уставать."
+        ],
+        motivation: [
+          "Помни, что каждый маленький шаг приближает тебя к цели!",
+          "Не забывай делать перерывы и заботиться о себе.",
+          "Ты способен на большее, просто верь в себя и действуй!"
+        ]
+      },
+      kz: {
+        social: [
+          "Достармен қиындықтар болуы мүмкін. Қолдау табу маңызды.",
+          "Жалғыздық сезінсең, мектептің қызық клубтарына қосыл.",
+          "Буллинг туралы мұғалімге немесе ата-анаңа айт."
+        ],
+        study: [
+          "Табысты оқу үшін уақытты жоспарлап, үзілістер жаса.",
+          "Ештеңе түсініксіз болса, мұғалімдерден сұраудан ұялма.",
+          "Үй тапсырмасын бөліп-бөліп орында."
+        ],
+        motivation: [
+          "Әр кішкентай қадам мақсатыңа жақындатады!",
+          "Үзіліс жасап, өзіңе қамқор болуды ұмытпа.",
+          "Өзіңе сен, және әрекет ет!"
+        ]
+      },
+      en: {
+        social: [
+          "I understand it's tough sometimes with friends. Finding support is important.",
+          "If you feel lonely, try joining school clubs or online groups.",
+          "Bullying is serious — talk to a teacher or parent about it."
+        ],
+        study: [
+          "Planning your time and taking breaks helps you study better.",
+          "Don't hesitate to ask teachers or classmates if something is unclear.",
+          "Do homework in parts to avoid burnout."
+        ],
+        motivation: [
+          "Remember, every small step brings you closer to your goal!",
+          "Don't forget to take breaks and take care of yourself.",
+          "You are capable of more — just believe and act!"
+        ]
+      }
+    };
 
-      if (text.includes("стресс") || text.includes("трев"))
-        return "Старайся делать паузы, дышать глубже и делить задачи на маленькие шаги. Ты справишься 💪";
-
-      if (text.includes("учёб") || text.includes("учеб"))
-        return "Лучше учиться помогает режим: 40 минут работа, 10 минут отдых. Попробуешь?";
-
-      return "Понял тебя! Могу помочь с учёбой, мотивацией или школьными вопросами.";
+    function getRandomResponse(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    // Ответы на казахском
-    if (isKazakh) {
-      if (text.includes("сәлем"))
-        return "Сәлем! Қалай көмектесе аламын? 😊";
+    function sendMessage() {
+      let input = document.getElementById("userInput");
+      let text = input.value.trim();
+      if (text === "") return;
 
-      if (text.includes("үй жұмысы") || text.includes("дз"))
-        return "Жарайды! Тапсырманы жібер, түсінікті етіп айтып беремін.";
+      let chatBox = document.getElementById("chat-box");
+      let lang = document.getElementById("language-select").value;
+      let topic = document.getElementById("topic-select").value;
 
-      if (text.includes("стресс") || text.includes("уайым"))
-        return "Тыныс алуды реттеп, демалыс жасап көр. Сен міндетті түрде жеңесің 💪";
+      // Сообщение пользователя
+      let userMsg = document.createElement("div");
+      userMsg.className = "msg user";
+      userMsg.textContent = text;
+      chatBox.appendChild(userMsg);
 
-      return "Түсіндім! Сабаққа, мотивацияға немесе мектеп мәселелеріне көмектесе аламын.";
+      // Ответ бота из базы по теме и языку
+      let botMsg = document.createElement("div");
+      botMsg.className = "msg bot";
+      botMsg.textContent = getRandomResponse(responses[lang][topic]);
+      chatBox.appendChild(botMsg);
+
+      input.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    // Ответы на английском
-    if (isEnglish) {
-      if (text.includes("hi") || text.includes("hello"))
-        return "Hello! How can I help you today? 😊";
+    // Отправка сообщения по нажатию Enter
+    document.getElementById("userInput").addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        sendMessage();
+      }
+    });
 
-      if (text.includes("homework"))
-        return "Sure! Send your task and I’ll help explain it.";
-
-      if (text.includes("stress"))
-        return "Try breathing slower and taking small breaks. You've got this 💪";
-
-      return "Got it! I can help with study tips, motivation, or school-life support.";
-    }
-
-    return "Хм… не совсем понял, но я готов помочь!";
-  }
-
-  function sendMessage() {
-    let input = document.getElementById("userInput");
-    let text = input.value.trim();
-    if (text === "") return;
-
-    let chatBox = document.getElementById("chat-box");
-
-    // Сообщение пользователя
-    let userMsg = document.createElement("div");
-    userMsg.className = "msg user";
-    userMsg.textContent = text;
-    chatBox.appendChild(userMsg);
-
-    // Ответ бота
-    let botMsg = document.createElement("div");
-    botMsg.className = "msg bot";
-    botMsg.textContent = generateResponse(text);
-    chatBox.appendChild(botMsg);
-
-    input.value = "";
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-</script>
+    // Отправка по кнопке
+    document.getElementById("sendBtn").addEventListener("click", sendMessage);
+  </script>
+</body>
+</html>
