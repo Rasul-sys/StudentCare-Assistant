@@ -1,116 +1,45 @@
-const responses = {
-  ru: {
-    social: [
-      "Понимаю, что бывает сложно с друзьями. Важно найти поддержку и не бояться просить помощи.",
-      "Если чувствуешь одиночество, попробуй найти школьные кружки по интересам.",
-      "Буллинг — это серьёзно, поговори с учителем или родителями.",
-      "Поддержка близких очень важна — не замыкайся в себе.",
-      "Важно учиться понимать других и выражать свои чувства.",
-      "Проблемы с одноклассниками решаются через диалог и помощь взрослых.",
-      "Если чувствуешь стресс, попробуй поговорить с кем-то, кому доверяешь.",
-      "Занятия спортом и творчеством помогают снять напряжение.",
-      "Развивай навыки общения — это поможет строить дружбу.",
-      "Если сталкиваешься с дискриминацией, важно знать свои права и обратиться за помощью."
-    ],
-    study: [
-      "Для успешной учёбы важно планировать время и делать перерывы.",
-      "Если что-то не понятно, не стесняйся спрашивать учителей или одноклассников.",
-      "Домашние задания лучше делать по частям, чтобы не уставать.",
-      "Учись ставить маленькие цели и награждай себя за их достижение.",
-      "Повторение — ключ к запоминанию материала.",
-      "Не бойся просить помощи, если что-то даётся сложно.",
-      "Используй разные способы обучения — видео, книги, практические задания.",
-      "Создавай конспекты и схемы для лучшего понимания.",
-      "Сохраняй мотивацию, напоминая себе, зачем учишься.",
-      "Организуй своё рабочее место, чтобы ничего не отвлекало."
-    ],
-    motivation: [
-      "Помни, что каждый маленький шаг приближает тебя к цели!",
-      "Не забывай делать перерывы и заботиться о себе.",
-      "Ты способен на большее, просто верь в себя и действуй!",
-      "Ошибки — это часть пути к успеху, не сдавайся!",
-      "Ставь перед собой вдохновляющие цели и двигайся к ним.",
-      "Верь в себя и свои силы — это уже большой шаг вперед.",
-      "Окружай себя позитивными людьми, которые поддерживают тебя.",
-      "Используй визуализацию — представь, чего хочешь добиться.",
-      "Помни: успех приходит к тем, кто не боится пробовать.",
-      "Каждый день — новая возможность стать лучше."
-    ]
-  },
-  kz: {
-    social: [
-      "Достармен қиындықтар болуы мүмкін. Қолдау табу маңызды.",
-      "Жалғыздық сезінсең, мектептің қызық клубтарына қосыл.",
-      "Буллинг туралы мұғалімге немесе ата-анаңа айт.",
-      "Жақындарыңның қолдауы маңызды — өзіңді оқшаулама.",
-      "Басқаларды түсініп, өз сезіміңді білдіруді үйрен.",
-      "Сыныптастармен қиындықтарды диалог арқылы шешуге болады.",
-      "Стрессті жеңу үшін сенетін адаммен сөйлес.",
-      "Спорт пен шығармашылықпен айналысу стресс азайтады.",
-      "Қарым-қатынас дағдыларын дамыт — бұл достықты нығайтады.",
-      "Дискриминацияға тап болсаң, құқықтарыңды біл және көмекке жүгін."
-    ],
-    study: [
-      "Табысты оқу үшін уақытты жоспарлап, үзілістер жаса.",
-      "Ештеңе түсініксіз болса, мұғалімдерден сұраудан ұялма.",
-      "Үй тапсырмасын бөліп-бөліп орында.",
-      "Кішігірім мақсаттар қойып, жеткен сайын өзіңді марапатта.",
-      "Материалды қайталау — есте сақтаудың кілті.",
-      "Қиындықтар болса, көмек сұраудан қорықпа.",
-      "Оқуды әртүрлі тәсілдермен жүргіз — видео, кітаптар, тәжірибелік тапсырмалар.",
-      "Жақсы түсіну үшін конспекттер мен схемалар жаса.",
-      "Мотивацияны сақтау үшін неге оқитыныңды еске түсір.",
-      "Жұмыс орныңды ұйымдастырып, алаңдататын нәрселерді болдырма."
-    ],
-    motivation: [
-      "Әр кішкентай қадам мақсатыңа жақындатады!",
-      "Үзіліс жасап, өзіңе қамқор болуды ұмытпа.",
-      "Өзіңе сен, және әрекет ет!",
-      "Қателіктер — жетістікке апаратын жолдың бір бөлігі, бас тартпа!",
-      "Өзіңе шабыт беретін мақсаттар қойып, соларға жет!",
-      "Өзіңе және күшіңе сен — бұл үлкен қадам.",
-      "Сенімді қолдайтын позитивті адамдармен қорша.",
-      "Көз алдыңа жетуді қалайтын нәрсені елестет.",
-      "Табысты тек әрекет ететіндерге келеді.",
-      "Әр күн — өзіңді жақсартудың жаңа мүмкіндігі."
-    ]
-  },
-  en: {
-    social: [
-      "I understand it's tough sometimes with friends. Finding support is important.",
-      "If you feel lonely, try joining school clubs or online groups.",
-      "Bullying is serious — talk to a teacher or parent about it.",
-      "Support from close ones is important — don't isolate yourself.",
-      "Learn to understand others and express your feelings.",
-      "Problems with classmates can be solved through dialogue and adult help.",
-      "If you're stressed, try talking to someone you trust.",
-      "Sports and creative activities help relieve tension.",
-      "Develop communication skills — it helps build friendships.",
-      "If you face discrimination, know your rights and seek help."
-    ],
-    study: [
-      "Planning your time and taking breaks helps you study better.",
-      "Don't hesitate to ask teachers or classmates if something is unclear.",
-      "Do homework in parts to avoid burnout.",
-      "Set small goals and reward yourself for achievements.",
-      "Repetition is the key to memorization.",
-      "Don't be afraid to ask for help if something is difficult.",
-      "Use different learning methods — videos, books, practical tasks.",
-      "Create notes and diagrams for better understanding.",
-      "Keep your motivation by reminding yourself why you study.",
-      "Organize your workspace to avoid distractions."
-    ],
-    motivation: [
-      "Remember, every small step brings you closer to your goal!",
-      "Don't forget to take breaks and take care of yourself.",
-      "You are capable of more — just believe and act!",
-      "Mistakes are part of the path to success, don't give up!",
-      "Set inspiring goals and move towards them.",
-      "Believe in yourself and your strength — that's a big step forward.",
-      "Surround yourself with positive people who support you.",
-      "Use visualization — imagine what you want to achieve.",
-      "Remember: success comes to those who dare to try.",
-      "Every day is a new chance to improve."
-    ]
-  }
-};
+<script>
+async function sendToAPI(message) {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ВСТАВЬ_СЮДА_СВОЙ_API_KEY"
+        },
+        body: JSON.stringify({
+            model: "gpt-4o-mini",
+            messages: [
+                {
+                    role: "system",
+                    content: "Ты StudentCare Assistant — умный помощник для школьников. Отвечай доброжелательно, понятно, с примерами. Глубже объясняй темы: школьные проблемы, учеба, стресс, мотивация."
+                },
+                {
+                    role: "user",
+                    content: message
+                }
+            ]
+        })
+    });
+
+    const data = await response.json();
+    return data.choices[0].message.content;
+}
+
+async function handleSend() {
+    const input = document.getElementById("userInput");
+    const message = input.value;
+    input.value = "";
+
+    addMessage("Ты: " + message);
+
+    const reply = await sendToAPI(message);
+    addMessage("Бот: " + reply);
+}
+
+function addMessage(text) {
+    const chat = document.getElementById("chat");
+    const p = document.createElement("p");
+    p.textContent = text;
+    chat.appendChild(p);
+}
+</script>
